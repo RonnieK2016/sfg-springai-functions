@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonClassDescription("Weather API request")
 public record WeatherRequest(@JsonProperty(required = true,
-        value = "location") @JsonPropertyDescription("The city and state e.g. San Francisco, CA") String location,
+        value = "location") @JsonPropertyDescription("The city e.g. San Francisco") String location,
                              @JsonProperty(required = false) @JsonPropertyDescription("Optional State for US Cities Only. Use full name of State") String state,
                              @JsonProperty(required = false) @JsonPropertyDescription("Optional Country name in ISO-3166-1 alpha2") String countryCode ){
 }

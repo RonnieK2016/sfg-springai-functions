@@ -32,9 +32,25 @@ public class WeatherServiceImpl implements WeatherService {
 
     @Override
     public Answer getWeather(Question question) {
+
         String response = ChatClient.create(chatModel).prompt()
                 .user(question.question())
-                .tools(FunctionToolCallback.builder("CurrentWeather", new WeatherServiceFunction(apiKey, weatherServiceUrl, geoService))
+                .system("You are a weather service. You receive weather information from a service which gives you the information based on the metrics system." +
+                        " When answering the weather in an imperial system country, you should convert the temperature to Fahrenheit and the wind speed to miles per hour. " +
+                        "When reporting weather information obtained from tools, include:\n" +
+                        "- temperature\n" +
+                        "- feels like temperature\n" +
+                        "- humidity\n" +
+                        "- wind speed\n" +
+                        "- wind direction\n" +
+                        "- pressure\n" +
+                        "- visibility\n" +
+                        "- cloud cover\n" +
+                        "- sunrise and sunset\n" +
+                        "- precipitation probability\n" +
+                        "if those values are available.")
+                .tools(FunctionToolCallback.builder("CurrentWeather",
+                                new WeatherServiceFunction(apiKey, weatherServiceUrl, geoService))
                         .description("Get the current weather for a location")
                         .inputType(WeatherRequest.class)
                         .build())
